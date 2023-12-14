@@ -10,12 +10,24 @@ const bio2 = "specialised in React";
 // Use a combination of Avatar, Heading and VStack components.
 const LandingSection = () => (
   <FullScreenSection
+    id="home-section"
     justifyContent="center"
     alignItems="center"
     isDarkBackground
     backgroundColor="#2A4365"
   >
-
+    <VStack>
+      <Avatar size="2xl" src="https://i.pravatar.cc/150?img=7" />{" "}
+      <Heading as="h6" size="sm">
+        {greeting}
+      </Heading>
+      <Heading as="h2" size="3xl" noOfLines={1} mt={10}>
+        {bio1}
+      </Heading>
+      <Heading as="h2" size="3xl" noOfLines={1}>
+        {bio2}
+      </Heading>
+    </VStack>
   </FullScreenSection>
 );
 

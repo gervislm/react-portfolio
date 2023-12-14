@@ -7,7 +7,7 @@ import {
   faMedium,
   faStackOverflow,
 } from "@fortawesome/free-brands-svg-icons";
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, HStack, Link } from "@chakra-ui/react";
 
 const socials = [
   {
@@ -33,6 +33,30 @@ const socials = [
 ];
 
 const Header = () => {
+  const headerRef = useRef(null);
+  useEffect(() => {
+    let prevScrollPos = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollPos = window.scrollY;
+      const headerElement = headerRef.current;
+      if (!headerElement) {
+        return;
+      }
+      if (prevScrollPos > currentScrollPos) {
+        headerElement.style.transform = "translateY(0)";
+      } else {
+        headerElement.style.transform = "translateY(-200px)";
+      }
+      prevScrollPos = currentScrollPos;
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const handleClick = (anchor) => () => {
     const id = `${anchor}-section`;
     const element = document.getElementById(id);
@@ -46,6 +70,7 @@ const Header = () => {
 
   return (
     <Box
+      ref={headerRef}
       position="fixed"
       top={0}
       left={0}
@@ -64,11 +89,19 @@ const Header = () => {
           alignItems="center"
         >
           <nav>
-            {/* Add social media links based on the `socials` data */}
+            <HStack spacing={4}>
+              {socials.map((social, index) => (
+                <a key={index} href={social.url} target="_blank" rel="">
+                  <FontAwesomeIcon icon={social.icon} size="2x" />
+                </a>
+              ))}
+            </HStack>
           </nav>
           <nav>
             <HStack spacing={8}>
-              {/* Add links to Projects and Contact me section */}
+              {/* <Link onClick={handleClick("home")}>Home</Link> */}
+              <Link onClick={handleClick("projects")}>Projects</Link>
+              <Link onClick={handleClick("contactme")}>Contact Me</Link>
             </HStack>
           </nav>
         </HStack>
@@ -76,4 +109,5 @@ const Header = () => {
     </Box>
   );
 };
+
 export default Header;
